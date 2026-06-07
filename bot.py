@@ -13,7 +13,7 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 # List of bad words to filter
-BAD_WORDS = ['damn', 'hell', 'crap']  # Add your own words here
+BAD_WORDS = ['nigger', 'nga', 'nigga', 'abuses', 'abuse']  # Add more words as needed
 
 # Track warnings
 user_warnings = {}
@@ -59,7 +59,7 @@ async def on_message(message):
         if warning_count < 3:
             embed = discord.Embed(
                 title="⚠️ Warning!",
-                description=f"{message.author.mention} used bad language\n**Warnings: {warning_count}/3**",
+                description=f"{message.author.mention} used abusive language\n**Warnings: {warning_count}/3**",
                 color=discord.Color.red()
             )
             await message.channel.send(embed=embed, delete_after=5)
@@ -67,11 +67,11 @@ async def on_message(message):
             # Ban after 3 warnings
             embed = discord.Embed(
                 title="🚫 Banned!",
-                description=f"{message.author.mention} has been banned (3 warnings)",
+                description=f"{message.author.mention} has been banned (3 warnings for abusive language)",
                 color=discord.Color.dark_red()
             )
             await message.channel.send(embed=embed)
-            await message.guild.ban(message.author, reason="3 warnings for bad language")
+            await message.guild.ban(message.author, reason="3 warnings for abusive language")
             del user_warnings[user_id]
     
     # Process commands
