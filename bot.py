@@ -64,14 +64,22 @@ async def on_message(message):
             )
             await message.channel.send(embed=embed, delete_after=5)
         else:
-            # Ban after 3 warnings
+            # Send report to admin (you) instead of banning
             embed = discord.Embed(
-                title="🚫 Banned!",
-                description=f"{message.author.mention} has been banned (3 warnings for abusive language)",
-                color=discord.Color.dark_red()
+                title="📋 Report - User Reached 3 Warnings",
+                description=f"**User:** {message.author.mention}\n**Username:** {message.author.name}\n**User ID:** {user_id}\n**Reason:** 3 warnings for abusive language",
+                color=discord.Color.orange()
             )
-            await message.channel.send(embed=embed)
-            await message.guild.ban(message.author, reason="3 warnings for abusive language")
+            embed.add_field(name="Action Required", value="Please review and decide on action (ban, kick, etc.)", inline=False)
+            
+            # Send report to your DM
+            try:
+                await message.author.send(embed=embed)
+            except:
+                pass
+            
+            # Also post in channel
+            await message.channel.send(f"⚠️ {message.author.mention} has received 3 warnings. Report sent to moderators.")
             del user_warnings[user_id]
     
     # Process commands
